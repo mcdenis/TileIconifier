@@ -44,13 +44,12 @@ using TileIconifier.Localization;
 using TileIconifier.Properties;
 using TileIconifier.Skinning;
 using TileIconifier.Skinning.Skins;
-using TileIconifier.Skinning.Skins.Dark;
 using TileIconifier.Utilities;
 
 namespace TileIconifier.Forms.Main
 {
     public partial class FrmMain
-    {   
+    {
         public event LocalizationEventHandler LanguageChangedEvent;
 
         protected virtual void OnLanguageChangedEvent(string newCulture)
@@ -76,7 +75,7 @@ namespace TileIconifier.Forms.Main
                 catch (Exception ex)
                 {
                     FrmException.ShowExceptionHandler(ex);
-                    MessageBox.Show(
+                    FormUtils.ShowMessage(this,
                         Strings.PowershellErrorFull,
                         Strings.PowershellFailure, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -146,16 +145,23 @@ namespace TileIconifier.Forms.Main
 
         private void UpdateSkin()
         {
-            if (defaultSkinToolStripMenuItem.Checked)
+            BaseSkin skin = SkinHandler.DefaultSkin;
+            if (darkSkinToolStripMenuItem.Checked)
             {
-                SkinHandler.SetCurrentSkin(new BaseSkin());
-                return;
+                skin = new DarkSkin();
             }
-            if (!darkSkinToolStripMenuItem.Checked)
+
+            try
             {
-                return;
+                Config.Instance.LastSkin = skin.GetType().Name;
+                Config.Instance.SaveConfig();
             }
-            SkinHandler.SetCurrentSkin(new DarkSkin());
+            catch
+            {
+                //ignore
+            }
+
+            SkinHandler.SetCurrentSkin(skin);
         }
 
         private void UpdateFormControls()
@@ -227,22 +233,21 @@ namespace TileIconifier.Forms.Main
 
                 if (updateDetails.UpdateAvailable)
                 {
-                    if (MessageBox.Show(
+                    if (FormUtils.ShowMessage(null,
                         string.Format(
                             Strings.UpdateAvailableFull,
                             updateDetails.CurrentVersion, updateDetails.LatestVersion),
                         Strings.NewVersionAvailable,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question,
-                        MessageBoxDefaultButton.Button1) == DialogResult.Yes
-                        )
+                        defaultButton: MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                     {
                         UrlUtils.OpenUrlInBrowser("https://github.com/Jonno12345/TileIconifier/releases");
                     }
                 }
                 else if (!silentIfNoUpdateDetected)
                 {
-                    MessageBox.Show(Strings.AlreadyLatest, Strings.UpToDate);
+                    FormUtils.ShowMessage(null, Strings.AlreadyLatest, Strings.UpToDate, icon: MessageBoxIcon.Information);
                 }
             }
             catch
@@ -252,7 +257,7 @@ namespace TileIconifier.Forms.Main
                     return;
                 }
 
-                if (MessageBox.Show(
+                if (FormUtils.ShowMessage(null,
                     string.Format(
                         Strings.UpdateAvailableError,
                         UpdateUtils
@@ -279,7 +284,7 @@ namespace TileIconifier.Forms.Main
 
         private void InitializeListboxColumns()
         {
-            srtlstShortcuts.BeginUpdate();            
+            srtlstShortcuts.BeginUpdate();
             srtlstShortcuts.Columns.Clear();
             srtlstShortcuts.Columns.Add(Strings.ShortcutName, 0, HorizontalAlignment.Left);
             srtlstShortcuts.Columns.Add(Strings.IsCustom, 0, HorizontalAlignment.Left);
@@ -302,7 +307,7 @@ namespace TileIconifier.Forms.Main
                 return;
             }
 
-            int clientWidth = srtlstShortcuts.ClientSize.Width;            
+            int clientWidth = srtlstShortcuts.ClientSize.Width;
 
             srtlstShortcuts.BeginUpdate();
 
@@ -335,12 +340,33 @@ namespace TileIconifier.Forms.Main
             foreach (
                 var dropDownItem in
                     languageToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>()
-                        .Where(dropDownItem => (string) dropDownItem.Tag == currentLanguage))
+                        .Where(dropDownItem => (string)dropDownItem.Tag == currentLanguage))
             {
                 CheckMenuItem(languageToolStripMenuItem, dropDownItem);
                 return;
             }
             CheckMenuItem(languageToolStripMenuItem, englishToolStripMenuItem);
+        }
+
+        private void SetCurrentSkin()
+        {
+            string skinTag;
+            if (SkinHandler.GetCurrentSkin() == SkinHandler.DefaultSkin)
+            {
+                skinTag = "DefaultSkin";
+            }
+            else
+            {
+                skinTag = SkinHandler.GetCurrentSkin().GetType().Name;
+            }
+
+            var itemToCheck = skinToolStripMenuItem.DropDownItems.Cast<ToolStripMenuItem>()
+                        .SingleOrDefault(dropDownItem => (string)dropDownItem.Tag == skinTag);
+
+            if (itemToCheck != null)
+            {
+                CheckMenuItem(skinToolStripMenuItem, itemToCheck);
+            }
         }
 
         private bool NotifyIncompatibleShortcut()

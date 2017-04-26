@@ -43,6 +43,7 @@ namespace TileIconifier.Skinning.Skins
         public virtual Color DisabledForeColor => SystemColors.GrayText;
         public virtual Color HighlightBackColor => SystemColors.Highlight;
         public virtual Color ErrorForeColor => Color.Red;
+        public virtual bool EnforceOnMessageBox => false;
 
         //These objects are potentially more expensive to create, se we cache them.
         public virtual Font Font { get; } = SystemFonts.DialogFont;       
@@ -101,8 +102,10 @@ namespace TileIconifier.Skinning.Skins
         #region "TrackBar"
         public virtual FlatStyle TrackBarFlatStyle => FlatStyle.Standard;
         public virtual Color TrackBarThumbBackColor => SystemColors.Control; //not used
-        public virtual Color TrackBarThumbBorderColor => SystemColors.ControlDark; //not used
-        public virtual Color TrackBarTrackColor => SystemColors.ControlDarkDark; //not used
+        public virtual Color TrackBarThumbBorderColor => SystemColors.WindowFrame; //not used
+        public virtual Color TrackBarThumbDisabledBackColor => SystemColors.ControlLight; //not used
+        public virtual Color TrackBarThumbDisabledBorderColor => SystemColors.ControlDark; //not used
+        public virtual Color TrackBarTrackColor => SystemColors.ControlDarkDark; //not used        
         #endregion
 
         #region "ToolStrip"
@@ -115,6 +118,6 @@ namespace TileIconifier.Skinning.Skins
         public virtual Color ToolStripMenuBarForeColor => ToolStripSystemColorTable.DefaultMenuBarForeColor;
         public virtual Color ToolStripPopupForeColor => ToolStripSystemColorTable.DefaultPopupForeColor;
         public virtual Color ToolStripDisabledForeColor => ToolStripSystemColorTable.DefaultDisabledForeColor;
-        #endregion        
+        #endregion
     }
 }

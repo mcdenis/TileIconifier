@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TileIconifier.Skinning.Skins;
 
@@ -20,11 +17,11 @@ namespace TileIconifier.Controls
         ///     Collection of <see cref="ControlStyles"/> that should be set to true 
         ///     when we want to draw ourselves. 
         /// </summary>
-        private readonly ReadOnlyCollection<ControlStyles> _customPaintingFlags = new List<ControlStyles>
+        private static readonly ReadOnlyCollection<ControlStyles> _customPaintingFlags = new List<ControlStyles>
         {
             ControlStyles.UserPaint,
             ControlStyles.AllPaintingInWmPaint,
-            ControlStyles.OptimizedDoubleBuffer            
+            ControlStyles.OptimizedDoubleBuffer
         }.AsReadOnly();
 
         /// <summary>
@@ -54,6 +51,7 @@ namespace TileIconifier.Controls
         }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete(UNSUPPORTED_PROPERTY_ERROR)]
         public new Orientation Orientation
         {
@@ -96,7 +94,7 @@ namespace TileIconifier.Controls
                 if (_flatThumbBackColor != value)
                 {
                     _flatThumbBackColor = value;
-                    if (HandleDrawing)
+                    if (HandleDrawing && Enabled)
                     {
                         Invalidate();
                     }
@@ -104,8 +102,26 @@ namespace TileIconifier.Controls
             }
         }
 
-        private Color _flatThumbBorderColor = SystemColors.ControlDark;
-        [DefaultValue(typeof(Color), nameof(SystemColors.ControlDark))]
+        private Color _flatThumbDisabledBackColor = SystemColors.ControlLight;
+        [DefaultValue(typeof(Color), nameof(SystemColors.ControlLight))]
+        public Color FlatThumbDisabledBackColor
+        {
+            get { return _flatThumbDisabledBackColor; }
+            set
+            {
+                if (_flatThumbDisabledBackColor != value)
+                {
+                    _flatThumbDisabledBackColor = value;
+                    if (HandleDrawing && !Enabled)
+                    {
+                        Invalidate();
+                    }
+                }
+            }
+        }
+
+        private Color _flatThumbBorderColor = SystemColors.WindowFrame;
+        [DefaultValue(typeof(Color), nameof(SystemColors.WindowFrame))]
         public Color FlatThumbBorderColor
         {
             get { return _flatThumbBorderColor; }
@@ -114,7 +130,7 @@ namespace TileIconifier.Controls
                 if (_flatThumbBorderColor != value)
                 {
                     _flatThumbBorderColor = value;
-                    if (HandleDrawing)
+                    if (HandleDrawing && Enabled)
                     {
                         Invalidate();
                     }
@@ -122,8 +138,26 @@ namespace TileIconifier.Controls
             }
         }
 
-        private Color _flatTrackColor = SystemColors.ControlDarkDark;
-        [DefaultValue(typeof(Color), nameof(SystemColors.ControlDarkDark))]
+        private Color _flatThumbDisabledBorderColor = SystemColors.ControlDark;
+        [DefaultValue(typeof(Color), nameof(SystemColors.ControlDark))]
+        public Color FlatThumbDisabledBorderColor
+        {
+            get { return _flatThumbDisabledBorderColor; }
+            set
+            {
+                if (_flatThumbDisabledBorderColor != value)
+                {
+                    _flatThumbDisabledBorderColor = value;
+                    if (HandleDrawing && !Enabled)
+                    {
+                        Invalidate();
+                    }
+                }
+            }
+        }
+
+        private Color _flatTrackColor = SystemColors.ControlDark;
+        [DefaultValue(typeof(Color), nameof(SystemColors.ControlDark))]
         public Color FlatTrackColor
         {
             get { return _flatTrackColor; }
@@ -158,6 +192,10 @@ namespace TileIconifier.Controls
             }
         }
         #endregion
+
+        /// <summary>
+        ///     Returns the bounding rectangle for the track of this trackbar.
+        /// </summary>
         protected Rectangle GetTrackRect()
         {
             NativeMethods.RECT r = new NativeMethods.RECT();
@@ -165,11 +203,114 @@ namespace TileIconifier.Controls
             return Rectangle.FromLTRB(r.left, r.top, r.right, r.bottom);
         }
 
+        /// <summary>
+        ///     Returns the bounding rectangle for the thumb of this trackbar.
+        /// </summary>
         protected Rectangle GetThumbRect()
         {
             NativeMethods.RECT r = new NativeMethods.RECT();
             NativeMethods.SendMessage(Handle, NativeMethods.TBM_GETTHUMBRECT, IntPtr.Zero, ref r);
             return Rectangle.FromLTRB(r.left, r.top, r.right, r.bottom);
+        }
+
+        /// <summary>
+        ///     Returns the number of ticks for this trackbar.
+        /// </summary>        
+        protected int GetTickCount()
+        {
+            return NativeMethods.SendMessage(Handle, NativeMethods.TBM_GETNUMTICS, IntPtr.Zero, IntPtr.Zero).ToInt32();
+        }
+
+        /// <summary>
+        ///     Returns the physical distance between the tick at the specified index and the left of this trackbar.
+        /// </summary>
+        protected int GetTickPosition(int index)
+        {
+            //We must do all sort of tricks here because of how the native track bar control is implemented:
+            //0 1 2 3 4 5 6 7 8 9    // Tick positions seen on the trackbar.
+            //  1 2 3 4 5 6 7 8      // Tick positions whose position can be identified.
+            //  0 1 2 3 4 5 6 7      // Index numbers for the identifiable positions.
+            //https://msdn.microsoft.com/en-us/library/windows/desktop/bb760207
+
+            int tickCount = GetTickCount();
+
+            if (index < 0 || index >= tickCount)
+            {
+                throw new IndexOutOfRangeException(nameof(index));
+            }
+
+            if (index > 0 && index < tickCount - 1)
+            {
+                //The index is within the range that the native method supports
+                return GetTickPositionNative(index);
+            }
+            else if (tickCount >= 4)
+            {
+                //We can get the location of at least two ticks, so we can 
+                //calculate the spacing between those and guess the location 
+                //of the first/last one from there.
+                var tick1 = GetTickPositionNative(1);
+                var tick2 = GetTickPositionNative(2);
+                var ticksSpacing = tick2 - tick1;
+                if ((index == 0 && RightToLeft != RightToLeft.Yes) || (index == tickCount - 1 && RightToLeft == RightToLeft.Yes))
+                {
+                    //tick is far left
+                    return tick1 - ticksSpacing;
+                }
+                else
+                {
+                    //tick is far right
+                    return GetTickPosition(tickCount - 2) + ticksSpacing;
+                }
+            }
+            else
+            {
+                //We don't have enough info, so we just hard-code empirical values.
+                if ((index == 0 && RightToLeft != RightToLeft.Yes) || (index == tickCount - 1 && RightToLeft == RightToLeft.Yes))
+                {
+                    return ClientRectangle.Left + 13;
+                }
+                else
+                {
+                    return ClientRectangle.Right - 13;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Wraps the native method to obtain the tick position, but with the index offsets compensated.
+        ///     The lowest and the highest indexes are not supported though. For most scenarios use the 
+        ///     GetTickPosition method instead, which supports all the indexes.
+        /// </summary>        
+        private int GetTickPositionNative(int index)
+        {
+            return NativeMethods.SendMessage(Handle, NativeMethods.TBM_GETTICPOS, (IntPtr)index - 1, IntPtr.Zero).ToInt32();
+        }
+
+        /// <summary>
+        ///     Returns the bounding rectangles of the ticks at the specified index.
+        /// </summary>        
+        private Rectangle[] GetTickRectangles(int tickPos)
+        {
+
+            var x = tickPos;
+            var tickWidth = 1;
+            var tickHeight = 4;
+
+            switch (TickStyle)
+            {
+                case TickStyle.TopLeft:
+                    return new Rectangle[] { new Rectangle(x, 4, tickWidth, tickHeight) };
+
+                case TickStyle.BottomRight:
+                    return new Rectangle[] { new Rectangle(x, 23, tickWidth, tickHeight) };
+
+                case TickStyle.Both:
+                    return new Rectangle[] { new Rectangle(x, 4, tickWidth, tickHeight), new Rectangle(x, 34, tickWidth, tickHeight) };
+
+                default:
+                    return new Rectangle[] { Rectangle.Empty };
+            }
         }
 
         /// <summary>
@@ -187,7 +328,7 @@ namespace TileIconifier.Controls
         }
 
         /// <summary>
-        ///     Reset the owner drawing flags.
+        ///     Resets the owner drawing flags.
         /// </summary>
         private void ResetOwnerDrawing()
         {
@@ -247,20 +388,20 @@ namespace TileIconifier.Controls
         }
 
         protected override void OnPaint(PaintEventArgs e)
-        {   
+        {
             var g = e.Graphics;
             g.Clear(BackColor);
 
-
             //Draw the track
             Rectangle trackRect = GetTrackRect();
-            Rectangle usrTrackRect = new Rectangle(
+            //Apply the user-defined track thickness. We can't use Inflate here, 
+            //because it can only change the height two pixels at the time (one on each side).
+            trackRect = new Rectangle(
                 trackRect.X, trackRect.Y + (trackRect.Height - FlatTrackThickness) / 2, trackRect.Width, FlatTrackThickness);
 
-            trackRect.Inflate(0, (FlatTrackThickness - trackRect.Height) / 2); //lol
             using (var b = new SolidBrush(FlatTrackColor))
             {
-                g.FillRectangle(b, usrTrackRect);
+                g.FillRectangle(b, trackRect);
             }
 
             //Prepare to draw the thumb
@@ -268,17 +409,45 @@ namespace TileIconifier.Controls
             Point[] ptsBorder = GetThumbPoints(new Rectangle(thumbRect.X, thumbRect.Y, thumbRect.Width - 1, thumbRect.Height - 1)); //-1 is the typical GDI+ compensation.
             thumbRect.Inflate(-1, -1); //exclude border
             Point[] ptsBack = GetThumbPoints(thumbRect);
+            Color borderCol;
+            Color backCol;
+            if (Enabled)
+            {
+                borderCol = FlatThumbBorderColor;
+                backCol = FlatThumbBackColor;
+            }
+            else
+            {
+                borderCol = FlatThumbDisabledBorderColor;
+                backCol = FlatThumbDisabledBackColor;
+            }
 
-            //Draw border
-            using (var p = new Pen(FlatThumbBorderColor))
+            //Draw thumb border
+            using (var p = new Pen(borderCol))
             {
                 g.DrawPolygon(p, ptsBorder);
             }
 
-            //Draw background
-            using (var b = new SolidBrush(FlatThumbBackColor))
+            //Draw thumb background
+            using (var b = new SolidBrush(backCol))
             {
                 g.FillPolygon(b, ptsBack);
+            }
+
+            //Draw ticks
+            var tickCount = GetTickCount();
+            using (var b = new SolidBrush(ForeColor))
+            {
+                for (int i = 0; i < tickCount; i++)
+                {
+                    g.FillRectangles(b, GetTickRectangles(GetTickPosition(i)));
+                }
+            }
+
+            //Draw focus rectangle, if needed
+            if (Focused && ShowFocusCues)
+            {
+                ControlPaint.DrawFocusRectangle(g, ClientRectangle, ForeColor, Color.Transparent);
             }
 
             base.OnPaint(e);
@@ -288,7 +457,9 @@ namespace TileIconifier.Controls
         {
             FlatStyle = skin.TrackBarFlatStyle;
             FlatThumbBackColor = skin.TrackBarThumbBackColor;
+            FlatThumbDisabledBackColor = skin.TrackBarThumbDisabledBackColor;
             FlatThumbBorderColor = skin.TrackBarThumbBorderColor;
+            FlatThumbDisabledBorderColor = skin.TrackBarThumbDisabledBorderColor;
             FlatTrackColor = skin.TrackBarTrackColor;
         }
     }

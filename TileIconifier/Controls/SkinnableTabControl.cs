@@ -22,7 +22,7 @@ namespace TileIconifier.Controls
         ///     Collection of <see cref="ControlStyles"/> that should be set to true 
         ///     when we want to draw ourselves. 
         /// </summary>
-        private readonly ReadOnlyCollection<ControlStyles> customPaintingFlags = new List<ControlStyles>
+        private static readonly ReadOnlyCollection<ControlStyles> customPaintingFlags = new List<ControlStyles>
         {
             ControlStyles.UserPaint,
             ControlStyles.AllPaintingInWmPaint,
@@ -79,6 +79,7 @@ namespace TileIconifier.Controls
         }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete(UNSUPPORTED_PROPERTY_ERROR)]
         public new TabAlignment Alignment
         {
@@ -102,8 +103,8 @@ namespace TileIconifier.Controls
             }
         }
 
-        private FlatStyle flatStyle = FlatStyle.System;
-        [DefaultValue(FlatStyle.System)]
+        private FlatStyle flatStyle = FlatStyle.Standard;
+        [DefaultValue(FlatStyle.Standard)]
         public FlatStyle FlatStyle
         {
             get { return flatStyle; }
@@ -266,6 +267,7 @@ namespace TileIconifier.Controls
             switch (FlatStyle)
             {
                 case FlatStyle.Standard:
+                    //Not supported. Fallback on FlatStyle.System
                 case FlatStyle.System:
                     if (Appearance == Appearance.Button)
                     {

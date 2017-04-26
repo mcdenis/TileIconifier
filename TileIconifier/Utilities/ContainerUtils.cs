@@ -1,5 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Reflection;
+using System.Windows.Forms;
 using TileIconifier.Controls;
+using TileIconifier.Skinning;
 using TileIconifier.Skinning.Skins;
 
 namespace TileIconifier.Utilities
@@ -25,6 +28,45 @@ namespace TileIconifier.Utilities
             {
                 ApplySkinToControl(skin, c);
             }
+        }
+
+        internal static BaseSkin SkinFromString(string skinString)
+        {
+            //attempt to load the type from the Skins assembly
+            var type = Type.GetType("TileIconifier.Skinning.Skins." + skinString);
+            if (type == null)
+            {
+                //unable to determine skin, pass the default
+                return SkinHandler.DefaultSkin;
+            }
+
+            //pass the determined skin or the default on failure
+            try
+            {
+                return (BaseSkin) Activator.CreateInstance(type);
+            }
+            catch
+            {
+                return SkinHandler.DefaultSkin;
+            }
+        }
+
+        /// <summary>
+        /// Returns the control from which the ToolStrip originated.
+        /// </summary>
+        /// <param name="sender">ToolStripItem that was clicked.</param>        
+        public static Control GetToolStripSourceControl(object sender)
+        {
+            var menuItem = sender as ToolStripItem;
+            if (menuItem != null)
+            {
+                var owner = menuItem.Owner as ContextMenuStrip;
+                if (owner != null)
+                {
+                    return owner.SourceControl;
+                }
+            }
+            return null;
         }
     }
 }
