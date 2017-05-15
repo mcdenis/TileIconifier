@@ -121,9 +121,14 @@
     <Compile Include="Controls\IconifierPanel\ColorPanel.Designer.cs">
       <DependentUpon>ColorPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IconifierPanel\PictureBox\AlignForm.cs" />
+    <Compile Include="Controls\IconifierPanel\PictureBox\AlignForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\IconifierPanel\PictureBox\AlignForm.Designer.cs">
       <DependentUpon>AlignForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IconifierPanel\PictureBox\AlignImageDropDown.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\IconifierPanel\PictureBox\PannablePictureBox.cs">
       <SubType>UserControl</SubType>

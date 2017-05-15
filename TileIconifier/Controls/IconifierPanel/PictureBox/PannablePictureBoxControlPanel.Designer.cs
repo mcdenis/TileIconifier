@@ -35,16 +35,20 @@
             this.lblPercent = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flpCommands = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlZoomTrack = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
-            this.ttpCommands = new System.Windows.Forms.ToolTip(this.components);
             this.btnEnlarge = new TileIconifier.Controls.SkinnableButton();
             this.btnShrink = new TileIconifier.Controls.SkinnableButton();
             this.btnReset = new TileIconifier.Controls.SkinnableButton();
             this.btnAlign = new TileIconifier.Controls.SkinnableButton();
             this.btnOpenImage = new TileIconifier.Controls.SkinnableButton();
+            this.pnlZoomTrack = new System.Windows.Forms.Panel();
             this.trkZoom = new TileIconifier.Controls.SkinnableTrackBar();
             this.panPct = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox();
+            this.lblHeader = new System.Windows.Forms.Label();
+            this.ttpCommands = new System.Windows.Forms.ToolTip(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.alignImageDropDown = new TileIconifier.Controls.IconifierPanel.PictureBox.AlignImageDropDown(this.components);
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.flpCommands.SuspendLayout();
             this.pnlZoomTrack.SuspendLayout();
@@ -85,18 +89,6 @@
             this.flpCommands.Controls.Add(this.btnOpenImage);
             this.flpCommands.Name = "flpCommands";
             this.tableLayoutPanel1.SetRowSpan(this.flpCommands, 2);
-            // 
-            // pnlZoomTrack
-            // 
-            resources.ApplyResources(this.pnlZoomTrack, "pnlZoomTrack");
-            this.pnlZoomTrack.Controls.Add(this.lblPercent);
-            this.pnlZoomTrack.Controls.Add(this.trkZoom);
-            this.pnlZoomTrack.Name = "pnlZoomTrack";
-            // 
-            // lblHeader
-            // 
-            resources.ApplyResources(this.lblHeader, "lblHeader");
-            this.lblHeader.Name = "lblHeader";
             // 
             // btnEnlarge
             // 
@@ -150,6 +142,13 @@
             this.btnOpenImage.UseVisualStyleBackColor = true;
             this.btnOpenImage.Click += new System.EventHandler(this.btnOpenImage_Click);
             // 
+            // pnlZoomTrack
+            // 
+            resources.ApplyResources(this.pnlZoomTrack, "pnlZoomTrack");
+            this.pnlZoomTrack.Controls.Add(this.lblPercent);
+            this.pnlZoomTrack.Controls.Add(this.trkZoom);
+            this.pnlZoomTrack.Name = "pnlZoomTrack";
+            // 
             // trkZoom
             // 
             resources.ApplyResources(this.trkZoom, "trkZoom");
@@ -166,6 +165,31 @@
             this.panPct.AssociatedSize = new System.Drawing.Size(0, 0);
             this.panPct.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panPct.Name = "panPct";
+            // 
+            // lblHeader
+            // 
+            resources.ApplyResources(this.lblHeader, "lblHeader");
+            this.lblHeader.Name = "lblHeader";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 50;
+            // 
+            // alignImageDropDown
+            // 
+            this.alignImageDropDown.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.alignImageDropDown.Name = "alignImageDropDown1";
+            this.alignImageDropDown.PannablePictureBox = this.panPct;
+            this.alignImageDropDown.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            resources.ApplyResources(this.alignImageDropDown, "alignImageDropDown");
+            // 
+            // timer3
+            // 
+            this.timer3.Interval = 50;
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 50;
             // 
             // PannablePictureBoxControlPanel
             // 
@@ -200,5 +224,9 @@
         private PannablePictureBox panPct;
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.ToolTip ttpCommands;
+        private AlignImageDropDown alignImageDropDown;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timer3;
     }
 }

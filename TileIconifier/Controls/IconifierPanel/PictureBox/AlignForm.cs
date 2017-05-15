@@ -33,21 +33,9 @@ using TileIconifier.Properties;
 
 namespace TileIconifier.Controls.IconifierPanel.PictureBox
 {
-    public class AlignFormEventArgs : EventArgs
-    {
-        public AlignButtonClick AlignButtonClicked { get; set; }
-
-        public AlignFormEventArgs(AlignButtonClick alignButtonClick)
-        {
-            AlignButtonClicked = alignButtonClick;
-        }
-    }
-
-    public delegate void AlignFormEvent(object sender, AlignFormEventArgs e);
-
     public partial class AlignForm : Form
     {
-        private AlignButtonClick _timerClick;
+        private PannableImageAdjustement _timerClick;
 
         public AlignForm()
         {
@@ -57,7 +45,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
 
         public event AlignFormEvent AlignFormClick;
 
-        protected virtual void OnAlignFormClick(AlignButtonClick alignbuttonclick)
+        protected virtual void OnAlignFormClick(PannableImageAdjustement alignbuttonclick)
         {
             AlignFormClick?.Invoke(this, new AlignFormEventArgs(alignbuttonclick));
         }
@@ -71,18 +59,18 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
 
         private void AddEventHandlers()
         {
-            btnLeft.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.LeftAlign);
-            btnRight.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.RightAlign);
-            btnTop.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.TopAlign);
-            btnBottom.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.BottomAlign);
-            btnXMiddle.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.XAlign);
-            btnYMiddle.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.YAlign);
-            btnAlignCenter.Click += (sender, args) => OnAlignFormClick(AlignButtonClick.Center);
+            btnLeft.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.LeftAlign);
+            btnRight.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.RightAlign);
+            btnTop.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.TopAlign);
+            btnBottom.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.BottomAlign);
+            btnXMiddle.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.XAlign);
+            btnYMiddle.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.YAlign);
+            btnAlignCenter.Click += (sender, args) => OnAlignFormClick(PannableImageAdjustement.Center);
 
-            btnNudgeLeft.MouseDown += (sender, args) => TimerDown(AlignButtonClick.NudgeLeft);
-            btnNudgeDown.MouseDown += (sender, args) => TimerDown(AlignButtonClick.NudgeDown);
-            btnNudgeUp.MouseDown += (sender, args) => TimerDown(AlignButtonClick.NudgeUp);
-            btnNudgeRight.MouseDown += (sender, args) => TimerDown(AlignButtonClick.NudgeRight);
+            btnNudgeLeft.MouseDown += (sender, args) => TimerDown(PannableImageAdjustement.NudgeLeft);
+            btnNudgeDown.MouseDown += (sender, args) => TimerDown(PannableImageAdjustement.NudgeDown);
+            btnNudgeUp.MouseDown += (sender, args) => TimerDown(PannableImageAdjustement.NudgeUp);
+            btnNudgeRight.MouseDown += (sender, args) => TimerDown(PannableImageAdjustement.NudgeRight);
             btnNudgeLeft.MouseUp += (sender, args) => TimerUp();
             btnNudgeDown.MouseUp += (sender, args) => TimerUp();
             btnNudgeUp.MouseUp += (sender, args) => TimerUp();
@@ -107,13 +95,13 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
 
         private void tmrNudge_Tick(object sender, EventArgs e)
         {
-            if (_timerClick == AlignButtonClick.Unknown)
+            if (_timerClick == PannableImageAdjustement.Unknown)
                 return;
             OnAlignFormClick(_timerClick);
         }
 
 
-        private void TimerDown(AlignButtonClick clickType)
+        private void TimerDown(PannableImageAdjustement clickType)
         {
             _timerClick = clickType;
             tmrNudge_Tick(this, null);
@@ -123,11 +111,11 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         private void TimerUp()
         {
             tmrNudge.Enabled = false;
-            _timerClick = AlignButtonClick.Unknown;
+            _timerClick = PannableImageAdjustement.Unknown;
         }
     }
 
-    public enum AlignButtonClick
+    public enum PannableImageAdjustement
     {
         Unknown = 0,
         LeftAlign = 1,
@@ -142,4 +130,16 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         NudgeRight = 10,
         Center = 11
     }
+
+    public class AlignFormEventArgs : EventArgs
+    {
+        public PannableImageAdjustement AlignButtonClicked { get; set; }
+
+        public AlignFormEventArgs(PannableImageAdjustement alignButtonClick)
+        {
+            AlignButtonClicked = alignButtonClick;
+        }
+    }
+
+    public delegate void AlignFormEvent(object sender, AlignFormEventArgs e);
 }

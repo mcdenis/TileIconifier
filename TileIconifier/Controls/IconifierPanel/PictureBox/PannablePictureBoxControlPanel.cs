@@ -121,53 +121,9 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
-            var alignForm = new AlignForm {Location = MousePosition};
-            alignForm.AlignFormClick += AlignFormClick;
-            alignForm.Show(this);
-        }
-
-        private void AlignFormClick(object sender, AlignFormEventArgs eventArgs)
-        {
-            switch (eventArgs.AlignButtonClicked)
-            {
-                case AlignButtonClick.LeftAlign:
-                    PannablePictureBox.AlignLeft();
-                    break;
-                case AlignButtonClick.BottomAlign:
-                    PannablePictureBox.AlignBottom();
-                    break;
-                case AlignButtonClick.RightAlign:
-                    PannablePictureBox.AlignRight();
-                    break;
-                case AlignButtonClick.TopAlign:
-                    PannablePictureBox.AlignTop();
-                    break;
-                case AlignButtonClick.XAlign:
-                    PannablePictureBox.AlignXMiddle();
-                    break;
-                case AlignButtonClick.YAlign:
-                    PannablePictureBox.AlignYMiddle();
-                    break;
-                case AlignButtonClick.NudgeUp:
-                    PannablePictureBox.Nudge(y: -1);
-                    break;
-                case AlignButtonClick.NudgeDown:
-                    PannablePictureBox.Nudge(y: 1);
-                    break;
-                case AlignButtonClick.NudgeLeft:
-                    PannablePictureBox.Nudge(-1);
-                    break;
-                case AlignButtonClick.NudgeRight:
-                    PannablePictureBox.Nudge(1);
-                    break;
-                case AlignButtonClick.Center:
-                    PannablePictureBox.CenterImage();
-                    break;
-                case AlignButtonClick.Unknown:
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(eventArgs.AlignButtonClicked), eventArgs.AlignButtonClicked, null);
-            }
-        }
+            var ctrl = (Control)sender;
+            alignImageDropDown.Show(MousePosition);
+        }        
 
         private void trkZoom_Scroll(object sender, EventArgs e)
         {

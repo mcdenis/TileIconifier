@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="tmrEnlarge.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>104, 17</value>
   </metadata>
   <metadata name="tmrShrink.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>104, 17</value>
+    <value>215, 17</value>
   </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblPercent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -190,7 +190,7 @@
     <value>1</value>
   </data>
   <metadata name="ttpCommands.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>209, 17</value>
+    <value>320, 17</value>
   </metadata>
   <data name="btnEnlarge.ToolTip" xml:space="preserve">
     <value>Zoom in</value>
@@ -199,7 +199,7 @@
     <value>btnEnlarge</value>
   </data>
   <data name="&gt;&gt;btnEnlarge.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnEnlarge.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -232,7 +232,7 @@
     <value>btnShrink</value>
   </data>
   <data name="&gt;&gt;btnShrink.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnShrink.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -265,7 +265,7 @@
     <value>btnReset</value>
   </data>
   <data name="&gt;&gt;btnReset.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnReset.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -298,7 +298,7 @@
     <value>btnAlign</value>
   </data>
   <data name="&gt;&gt;btnAlign.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnAlign.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -331,7 +331,7 @@
     <value>btnOpenImage</value>
   </data>
   <data name="&gt;&gt;btnOpenImage.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnOpenImage.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -397,7 +397,7 @@
     <value>trkZoom</value>
   </data>
   <data name="&gt;&gt;trkZoom.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableTrackBar, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableTrackBar, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;trkZoom.Parent" xml:space="preserve">
     <value>pnlZoomTrack</value>
@@ -445,7 +445,7 @@
     <value>panPct</value>
   </data>
   <data name="&gt;&gt;panPct.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox, TileIconifier, Version=2.2.6312.38853, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;panPct.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -511,11 +511,32 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="flpCommands" Row="1" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlZoomTrack" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panPct" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblHeader" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>620, 17</value>
+  </metadata>
+  <metadata name="alignImageDropDown.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>449, 17</value>
+  </metadata>
+  <data name="alignImageDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>170, 189</value>
+  </data>
+  <data name="&gt;&gt;alignImageDropDown.Name" xml:space="preserve">
+    <value>alignImageDropDown</value>
+  </data>
+  <data name="&gt;&gt;alignImageDropDown.Type" xml:space="preserve">
+    <value>TileIconifier.Controls.IconifierPanel.PictureBox.AlignImageDropDown, TileIconifier, Version=2.2.6344.26753, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <metadata name="timer3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="timer2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>707, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -539,6 +560,24 @@
   </data>
   <data name="&gt;&gt;ttpCommands.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;timer1.Name" xml:space="preserve">
+    <value>timer1</value>
+  </data>
+  <data name="&gt;&gt;timer1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;timer3.Name" xml:space="preserve">
+    <value>timer3</value>
+  </data>
+  <data name="&gt;&gt;timer3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;timer2.Name" xml:space="preserve">
+    <value>timer2</value>
+  </data>
+  <data name="&gt;&gt;timer2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PannablePictureBoxControlPanel</value>
