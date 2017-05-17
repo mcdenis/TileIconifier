@@ -38,25 +38,25 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
     public partial class PannablePictureBoxControlPanel : UserControl
     {
         public PannablePictureBoxControlPanel()
-        {
-            InitializeComponent();
+        {            
+            InitializeComponent();            
         }
 
         [Browsable(false)]
-        public PannablePictureBox PannablePictureBox => panPct;
+        public PannablePictureBox PannablePictureBox => pannablePictureBox1;
 
         [Localizable(true)]
         public string HeaderText
         {
             get { return lblHeader.Text; }
             set { lblHeader.Text = value; }
-        }
-        
-        public Size PannablePictureBoxSize
-        {
-            get { return panPct.Size; }
-            set { panPct.Size = value; }
         }        
+        
+        public Size ImageOutputSize
+        {
+            get { return pannablePictureBox1.OutputSize; }
+            set { pannablePictureBox1.OutputSize = value; }
+        }       
 
         public event EventHandler ChangeImageClick;
 
@@ -198,6 +198,23 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         private void UpdateZoomPercentage()
         {
             lblPercent.Text = $@"{PannablePictureBox.GetZoomPercentage().ToString("F")}%";
+        }
+
+        //protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        //{
+        //    var s = (SizeF)ImageSize;
+        //    s.Width *= factor.Width;
+        //    s.Height *= factor.Height;
+        //    ImageSize = Size.Round(s);
+        //
+        //    base.ScaleControl(factor, specified);
+        //}
+
+        protected override void OnLoad(EventArgs e)
+        {
+
+
+            base.OnLoad(e);
         }
     }
 }

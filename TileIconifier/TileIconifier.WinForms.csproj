@@ -126,10 +126,7 @@
       <DependentUpon>AlignForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\IconifierPanel\PictureBox\PannablePictureBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\IconifierPanel\PictureBox\PannablePictureBox.Designer.cs">
-      <DependentUpon>PannablePictureBox.cs</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\IconifierPanel\PictureBox\PannablePictureBoxControlPanel.cs">
       <SubType>UserControl</SubType>
@@ -193,6 +190,9 @@
     <EmbeddedResource Include="Controls\IconifierPanel\TileIconifierPanel.ru.resx">
       <DependentUpon>TileIconifierPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomShortcutForms\FrmCustomShortcutConfirm.ru.resx">
       <DependentUpon>FrmCustomShortcutConfirm.cs</DependentUpon>
     </EmbeddedResource>
@@ -204,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomShortcutForms\FrmCustomShortcutManagerNew.ru.resx">
       <DependentUpon>FrmCustomShortcutManagerNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Main\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main\FrmAbout.ru.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
@@ -241,6 +244,12 @@
     <Compile Include="Controls\IconifierPanel\TileIconifierPanel.Designer.cs">
       <DependentUpon>TileIconifierPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CustomShortcutForms\FrmCustomShortcutConfirm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,6 +273,12 @@
     </Compile>
     <Compile Include="Forms\CustomShortcutForms\FrmCustomShortcutManagerNew.Designer.cs">
       <DependentUpon>FrmCustomShortcutManagerNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Main\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Main\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Main\FrmBatchShortcut.cs">
       <SubType>Form</SubType>
@@ -346,9 +361,6 @@
     <EmbeddedResource Include="Controls\IconifierPanel\PictureBox\AlignForm.resx">
       <DependentUpon>AlignForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\IconifierPanel\PictureBox\PannablePictureBox.resx">
-      <DependentUpon>PannablePictureBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\IconifierPanel\PictureBox\PannablePictureBoxControlPanel.resx">
       <DependentUpon>PannablePictureBoxControlPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -419,7 +431,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

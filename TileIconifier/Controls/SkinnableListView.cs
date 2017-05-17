@@ -233,7 +233,7 @@ namespace TileIconifier.Controls
                 DrawFlatBorder();
             }                
         }
-
+        
         private void DrawFlatBorder()
         {
             Color bColor;

@@ -31,6 +31,7 @@ namespace TileIconifier.Forms.Main
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.txtFilter = new TileIconifier.Controls.SkinnableTextBox();
             this.lblFilter = new System.Windows.Forms.Label();
@@ -65,6 +66,7 @@ namespace TileIconifier.Forms.Main
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblBadShortcutWarning = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ilstSmallImages = new System.Windows.Forms.ImageList(this.components);
             this.mnuMain.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -319,10 +321,16 @@ namespace TileIconifier.Forms.Main
             this.tableLayoutPanel1.Controls.Add(this.txtLnkPath, 0, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
+            // ilstSmallImages
+            // 
+            this.ilstSmallImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            resources.ApplyResources(this.ilstSmallImages, "ilstSmallImages");
+            this.ilstSmallImages.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // FrmMain
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.mnuMain);
             this.MainMenuStrip = this.mnuMain;
@@ -371,6 +379,7 @@ namespace TileIconifier.Forms.Main
         private System.Windows.Forms.Label lblBadShortcutWarning;
         private System.Windows.Forms.ToolStripMenuItem mnuBatchOperations;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ImageList ilstSmallImages;
     }
 }
 

@@ -38,6 +38,7 @@ using TileIconifier.Core;
 using TileIconifier.Core.Custom;
 using TileIconifier.Core.Shortcut;
 using TileIconifier.Core.Utilities;
+using TileIconifier.Forms.Main;
 using TileIconifier.Forms.Shared;
 using TileIconifier.Properties;
 using TileIconifier.Skinning.Skins;
@@ -134,7 +135,7 @@ namespace TileIconifier.Controls.IconifierPanel
         {
             Action<PannablePictureBox> setBackColor = b =>
             {
-                b.BackColor = b.PannablePictureBoxImage.Image == null
+                b.ImageBackColor = b.PannablePictureBoxImage.Image == null
                     ? _currentBaseSkin.BackColor
                     : color == null ? _currentBaseSkin.BackColor : ColorUtils.HexOrNameToColor(color);
                 b.Refresh();
@@ -169,7 +170,7 @@ namespace TileIconifier.Controls.IconifierPanel
         private void UpdatePictureBoxOverlay(PannablePictureBox pannablePictureBox, ShortcutItem currentShortcutItem)
         {
             pannablePictureBox.ShowTextOverlay = currentShortcutItem.Properties.CurrentState.ShowNameOnSquare150X150Logo;
-            pannablePictureBox.OverlayColor = currentShortcutItem.Properties.CurrentState.ForegroundText == "light"
+            pannablePictureBox.TextOverlayColor = currentShortcutItem.Properties.CurrentState.ForegroundText == "light"
                 ? Color.White
                 : Color.Black;
             pannablePictureBox.TextOverlay = Path.GetFileNameWithoutExtension(currentShortcutItem.ShortcutFileInfo.Name);
@@ -278,7 +279,7 @@ namespace TileIconifier.Controls.IconifierPanel
 
         private void SetupPannablePictureBoxes()
         {
-            _panPctMediumIcon.TextOverlayPoint = new Point(6, 78);
+            _panPctMediumIcon.TextOverlayLocation = new Point(6, 78);
 
             _pannablePictureBoxMetaDatas.Add(new PannablePictureBoxMetaData
             {
@@ -419,6 +420,17 @@ namespace TileIconifier.Controls.IconifierPanel
             CurrentShortcutItem.Properties.CurrentState.SmallImage.Height = item.Height;
 
             RunUpdate();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var lol = new Form1();
+            lol.Controls.Add(pannablePictureBoxControlPanelMedium.PannablePictureBox);
+            lol.Controls[0].Dock = DockStyle.Fill;
+            lol.Controls[0].AutoSize = false;
+            lol.Controls[0].AutoSize = true;
+            lol.Controls[0].AutoSize = false;
+            lol.ShowDialog(this);
         }
     }
 }

@@ -30,6 +30,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -103,7 +104,8 @@ namespace TileIconifier.Forms.Main
         {
             srtlstShortcuts.Items.Clear();
 
-            var smallImageList = new ImageList();
+            var smallImageList = ilstSmallImages;
+            smallImageList.Images.Clear();           
             for (var i = 0; i < _filteredList.Count; i++)
             {
                 var shortcutItem = _filteredList[i];
@@ -118,6 +120,25 @@ namespace TileIconifier.Forms.Main
             {
                 srtlstShortcuts.Items[0].Selected = true;
             }
+        }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            var scaledSizeF = (SizeF)ilstSmallImages.ImageSize;
+
+            if (specified.HasFlag(BoundsSpecified.Width))
+            {
+                scaledSizeF.Width *= factor.Width;                
+            }
+
+            if (specified.HasFlag(BoundsSpecified.Height))
+            {
+                scaledSizeF.Height *= factor.Height;
+            }
+
+            ilstSmallImages.ImageSize = Size.Round(scaledSizeF);
+
+            base.ScaleControl(factor, specified);
         }
 
         private void CheckPowershellPinningFromConfig()

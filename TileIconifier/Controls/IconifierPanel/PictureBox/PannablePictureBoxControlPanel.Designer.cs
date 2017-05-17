@@ -38,13 +38,14 @@
             this.pnlZoomTrack = new System.Windows.Forms.Panel();
             this.lblHeader = new System.Windows.Forms.Label();
             this.ttpCommands = new System.Windows.Forms.ToolTip(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pannablePictureBox1 = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox();
             this.btnEnlarge = new TileIconifier.Controls.SkinnableButton();
             this.btnShrink = new TileIconifier.Controls.SkinnableButton();
             this.btnReset = new TileIconifier.Controls.SkinnableButton();
             this.btnAlign = new TileIconifier.Controls.SkinnableButton();
             this.btnOpenImage = new TileIconifier.Controls.SkinnableButton();
             this.trkZoom = new TileIconifier.Controls.SkinnableTrackBar();
-            this.panPct = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flpCommands.SuspendLayout();
             this.pnlZoomTrack.SuspendLayout();
@@ -69,9 +70,9 @@
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.pannablePictureBox1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flpCommands, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnlZoomTrack, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.panPct, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lblHeader, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
@@ -97,6 +98,20 @@
             // 
             resources.ApplyResources(this.lblHeader, "lblHeader");
             this.lblHeader.Name = "lblHeader";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            resources.ApplyResources(this.imageList1, "imageList1");
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // pannablePictureBox1
+            // 
+            resources.ApplyResources(this.pannablePictureBox1, "pannablePictureBox1");
+            this.pannablePictureBox1.Name = "pannablePictureBox1";
+            this.pannablePictureBox1.OutputSize = new System.Drawing.Size(0, 0);
+            this.pannablePictureBox1.PlaceholderText = "Double\r\nClick\r\nMe";
+            this.pannablePictureBox1.TextOverlayLocation = new System.Drawing.Point(0, 0);
             // 
             // btnEnlarge
             // 
@@ -160,19 +175,12 @@
             this.trkZoom.Value = 1;
             this.trkZoom.Scroll += new System.EventHandler(this.trkZoom_Scroll);
             // 
-            // panPct
-            // 
-            resources.ApplyResources(this.panPct, "panPct");
-            this.panPct.AssociatedSize = new System.Drawing.Size(0, 0);
-            this.panPct.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panPct.Name = "panPct";
-            // 
             // PannablePictureBoxControlPanel
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PannablePictureBoxControlPanel";
-            resources.ApplyResources(this, "$this");
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flpCommands.ResumeLayout(false);
@@ -197,8 +205,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flpCommands;
         private System.Windows.Forms.Panel pnlZoomTrack;
-        private PannablePictureBox panPct;
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.ToolTip ttpCommands;
+        private PannablePictureBox pannablePictureBox1;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
