@@ -190,7 +190,7 @@
     <value>pannablePictureBox1</value>
   </data>
   <data name="&gt;&gt;pannablePictureBox1.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pannablePictureBox1.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -235,7 +235,7 @@
     <value>btnEnlarge</value>
   </data>
   <data name="&gt;&gt;btnEnlarge.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnEnlarge.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -268,7 +268,7 @@
     <value>btnShrink</value>
   </data>
   <data name="&gt;&gt;btnShrink.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnShrink.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -301,7 +301,7 @@
     <value>btnReset</value>
   </data>
   <data name="&gt;&gt;btnReset.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnReset.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -334,7 +334,7 @@
     <value>btnAlign</value>
   </data>
   <data name="&gt;&gt;btnAlign.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnAlign.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -367,7 +367,7 @@
     <value>btnOpenImage</value>
   </data>
   <data name="&gt;&gt;btnOpenImage.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableButton, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnOpenImage.Parent" xml:space="preserve">
     <value>flpCommands</value>
@@ -433,7 +433,7 @@
     <value>trkZoom</value>
   </data>
   <data name="&gt;&gt;trkZoom.Type" xml:space="preserve">
-    <value>TileIconifier.Controls.SkinnableTrackBar, TileIconifier, Version=2.2.6346.26082, Culture=neutral, PublicKeyToken=null</value>
+    <value>TileIconifier.Controls.SkinnableTrackBar, TileIconifier, Version=2.2.6347.33560, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;trkZoom.Parent" xml:space="preserve">
     <value>pnlZoomTrack</value>

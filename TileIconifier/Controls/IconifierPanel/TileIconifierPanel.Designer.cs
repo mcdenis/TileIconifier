@@ -39,6 +39,9 @@ namespace TileIconifier.Controls.IconifierPanel
             this.tmiChangeImage = new System.Windows.Forms.ToolStripMenuItem();
             this.tmiCentreImage = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pannablePictureBox1 = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBox();
             this.btnReset = new TileIconifier.Controls.SkinnableButton();
             this.colorPanel = new TileIconifier.Controls.IconifierPanel.ColorPanel();
             this.pannablePictureBoxControlPanelSmall = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBoxControlPanel();
@@ -46,6 +49,7 @@ namespace TileIconifier.Controls.IconifierPanel
             this.pannablePictureBoxControlPanelMedium = new TileIconifier.Controls.IconifierPanel.PictureBox.PannablePictureBoxControlPanel();
             this.tableLayoutPanel2.SuspendLayout();
             this.cmsPicBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlImages
@@ -56,7 +60,6 @@ namespace TileIconifier.Controls.IconifierPanel
             // lblUnsaved
             // 
             resources.ApplyResources(this.lblUnsaved, "lblUnsaved");
-            this.tableLayoutPanel2.SetColumnSpan(this.lblUnsaved, 2);
             this.lblUnsaved.Name = "lblUnsaved";
             // 
             // tableLayoutPanel2
@@ -97,6 +100,25 @@ namespace TileIconifier.Controls.IconifierPanel
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::TileIconifier.Properties.Resources.QuestionMark;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
+            // pannablePictureBox1
+            // 
+            resources.ApplyResources(this.pannablePictureBox1, "pannablePictureBox1");
+            this.pannablePictureBox1.Name = "pannablePictureBox1";
+            this.pannablePictureBox1.OutputSize = new System.Drawing.Size(90, 90);
+            this.pannablePictureBox1.TextOverlayLocation = new System.Drawing.Point(0, 0);
+            // 
             // btnReset
             // 
             resources.ApplyResources(this.btnReset, "btnReset");
@@ -136,6 +158,9 @@ namespace TileIconifier.Controls.IconifierPanel
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pannablePictureBox1);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.pnlImages);
@@ -144,6 +169,7 @@ namespace TileIconifier.Controls.IconifierPanel
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.cmsPicBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,5 +189,8 @@ namespace TileIconifier.Controls.IconifierPanel
         private System.Windows.Forms.ToolStripMenuItem tmiChangeImage;
         private System.Windows.Forms.ToolStripMenuItem tmiCentreImage;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private PannablePictureBox pannablePictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

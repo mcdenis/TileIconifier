@@ -424,13 +424,13 @@ namespace TileIconifier.Controls.IconifierPanel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var lol = new Form1();
-            lol.Controls.Add(pannablePictureBoxControlPanelMedium.PannablePictureBox);
-            lol.Controls[0].Dock = DockStyle.Fill;
-            lol.Controls[0].AutoSize = false;
-            lol.Controls[0].AutoSize = true;
-            lol.Controls[0].AutoSize = false;
+            var lol = new Form1();            
+            pannablePictureBoxControlPanelMedium.PannablePictureBox.Dock = DockStyle.Fill;
+            pannablePictureBoxControlPanelMedium.PannablePictureBox.AutoSize = false;            
+            lol.panel2.Controls.Add(pannablePictureBoxControlPanelMedium.PannablePictureBox);
             lol.ShowDialog(this);
+
+            pictureBox1.Size = new Size(1000, 1000);
         }
     }
 }

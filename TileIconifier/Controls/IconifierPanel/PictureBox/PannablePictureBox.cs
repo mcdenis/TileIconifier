@@ -66,7 +66,11 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         public override bool AutoSize
         {
             get { return base.AutoSize; }
-            set { base.AutoSize = value;}
+            set
+            {
+                SetStyle(ControlStyles.FixedWidth | ControlStyles.FixedHeight, value);                                
+                base.AutoSize = value;
+            }
         }
 
         [DefaultValue(typeof(Color), nameof(SystemColors.AppWorkspace))]
@@ -215,6 +219,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
             DoubleBuffered = true;
             ResizeRedraw = true;
             BackColor = SystemColors.AppWorkspace;
+            SetAutoSizeMode(AutoSizeMode.GrowAndShrink);
             PannablePictureBoxImage.OnPannablePictureNewImageSet += Image_OnPannablePictureNewImageSet;            
         }
         
@@ -410,9 +415,10 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 prefSizeF.Width = OutputSize.Width * scaleFactor.Width + 2 * BorderThickness;
                 prefSizeF.Height = OutputSize.Height * scaleFactor.Height + 2 * BorderThickness;
 
-                var prefSize = Size.Round(prefSizeF);
-                
+                var prefSize = Size.Round(prefSizeF);                
+
                 //Enforce maximum size
+                //0 means no maximum
                 if (MaximumSize.Width > 0)
                 {
                     prefSize.Width = Math.Min(MaximumSize.Width, prefSize.Width);
@@ -424,6 +430,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 }
 
                 //Enforce minimum size
+                //0 means no minimum
                 if (MinimumSize.Width > 0)
                 {
                     prefSize.Width = Math.Max(MinimumSize.Width, prefSize.Width);
@@ -434,6 +441,18 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                     prefSize.Height = Math.Max(MinimumSize.Height, prefSize.Height);
                 }
 
+                //Enforce proposed size
+                //0 means unbounded / no limit
+                if (proposedSize.Width > 0)
+                {
+                    prefSize.Width = Math.Min(proposedSize.Width, prefSize.Width);
+                }
+                
+                if (proposedSize.Height > 0)
+                {
+                    prefSize.Height = Math.Min(proposedSize.Height, prefSize.Height);
+                }                
+
                 return prefSize;
             }
             else
@@ -441,20 +460,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 return base.GetPreferredSize(proposedSize);
             }            
         }
-
-        protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
-        {
-            if (AutoSize)
-            {
-                //The control size is fixed to its ideal size.
-                var prefSize = GetPreferredSize(Size.Empty);
-                width = prefSize.Width;
-                height = prefSize.Height;
-            }
-
-            base.SetBoundsCore(x, y, width, height, specified);
-        }
-
+        
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(BackColor);
@@ -518,10 +524,16 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
             }
 
             //Draw the border delimiting the image area and the rest of the control
-            imgBounds.Inflate(BorderThickness, BorderThickness); //*scaleFactor?
+            imgBounds.Inflate(BorderThickness / 2, BorderThickness / 2);
+            //Apply the typical GDI+ compensation
+            if (BorderThickness < 2)
+            {
+                imgBounds.Width -= 1;
+                imgBounds.Height -= 1;
+            }
             using (var p = new Pen(SystemColors.WindowFrame, BorderThickness))
             {
-                e.Graphics.DrawRectangle(p, imgBounds.X, imgBounds.Y, imgBounds.Width - 1, imgBounds.Height - 1); //-1 is the typical GDI+ compensation
+                e.Graphics.DrawRectangle(p, imgBounds.X, imgBounds.Y, imgBounds.Width, imgBounds.Height);
             }
 
             base.OnPaint(e);
