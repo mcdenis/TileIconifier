@@ -57,23 +57,23 @@ namespace TileIconifier
             SetUpLanguageFromConfig();
             ApplySkinFromConfig();
 
-            try
-            {
-                if (!SystemUtils.IsAdministrator())
-                {
-                    MessageBox.Show(Strings.RunAsAdminFull,
-                        @"TileIconifier - " + Strings.RunAsAdmin, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
-                }
-            }
-            catch (UnableToDetectAdministratorException)
-            {
-                MessageBox.Show(
-                    Strings.VerifyAdminFull,
-                    @"TileIconifier - " + Strings.VerifyAdmin, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            }
+            //try
+            //{
+            //    if (!SystemUtils.IsAdministrator())
+            //    {
+            //        MessageBox.Show(Strings.RunAsAdminFull,
+            //            @"TileIconifier - " + Strings.RunAsAdmin, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            //        return;
+            //    }
+            //}
+            //catch (UnableToDetectAdministratorException)
+            //{
+            //    MessageBox.Show(
+            //        Strings.VerifyAdminFull,
+            //        @"TileIconifier - " + Strings.VerifyAdmin, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            //}
 
-            VerifyOs();
+            //VerifyOs();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

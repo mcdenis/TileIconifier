@@ -108,10 +108,9 @@
             // pannablePictureBox1
             // 
             resources.ApplyResources(this.pannablePictureBox1, "pannablePictureBox1");
+            this.pannablePictureBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pannablePictureBox1.Name = "pannablePictureBox1";
-            this.pannablePictureBox1.OutputSize = new System.Drawing.Size(0, 0);
             this.pannablePictureBox1.PlaceholderText = "Double\r\nClick\r\nMe";
-            this.pannablePictureBox1.TextOverlayLocation = new System.Drawing.Point(0, 0);
             // 
             // btnEnlarge
             // 

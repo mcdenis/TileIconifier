@@ -60,7 +60,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         [Browsable(false)]
         public Rectangle ImageRectangle => Rectangle.Round(GetImageBounds());
 
-        //Modifiable properties with their field
+        //Modifiable properties with their field, if needed
         [Browsable(true), EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public override bool AutoSize
@@ -72,14 +72,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 base.AutoSize = value;
             }
         }
-
-        [DefaultValue(typeof(Color), nameof(SystemColors.AppWorkspace))]
-        public override Color BackColor
-        {
-            get { return base.BackColor; }
-            set { base.BackColor = value; }
-        }
-
+        
         private Color _textOverlayColor = Color.White;
         [DefaultValue(typeof(Color), nameof(Color.White))]
         public Color TextOverlayColor
@@ -126,6 +119,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         }
 
         private Point _textOverlayLocation = Point.Empty;
+        [DefaultValue(typeof(Point), "0, 0")]
         public Point TextOverlayLocation
         {
             get { return _textOverlayLocation; }
@@ -138,7 +132,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 }
             }
         }
-
+        
         private int _borderThickness = 1;
         [DefaultValue(1)]
         public int BorderThickness
@@ -154,6 +148,42 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                     }
                     _borderThickness = value;
                     Invalidate();
+                }
+            }
+        }
+
+        private Color _borderColor = SystemColors.WindowFrame;
+        [DefaultValue(typeof(Color), nameof(SystemColors.WindowFrame))]
+        public Color BorderColor
+        {
+            get { return _borderColor; }
+            set
+            {
+                if (_borderColor != value)
+                {
+                    _borderColor = value;
+                    if (!Focused)
+                    {
+                        Invalidate(); //We could only invalidate the border region
+                    }                    
+                }
+            }
+        }
+
+        private Color _borderFocusedColor = SystemColors.Highlight;
+        [DefaultValue(typeof(Color), nameof(SystemColors.Highlight))]
+        public Color BorderFocusedColor
+        {
+            get { return _borderFocusedColor; }
+            set
+            {
+                if (_borderFocusedColor != value)
+                {
+                    _borderFocusedColor = value;
+                    if (Focused)
+                    {
+                        Invalidate(); //We could only invalidate the border region
+                    }
                 }
             }
         }
@@ -193,6 +223,7 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         }
 
         private Size _outputSize = Size.Empty;
+        [DefaultValue(typeof(Size), "0, 0")]
         public Size OutputSize
         {
             get { return _outputSize; }
@@ -201,10 +232,16 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 if (_outputSize != value)
                 {
                     _outputSize = value;
-                    if (AutoSize)
+                    if (AutoSize && Parent != null)
                     {
-                        //Already causes invalidation
-                        OnSizeChanged(EventArgs.Empty);
+                        var oldSize = Size;
+                        Parent.PerformLayout(this, nameof(Bounds));
+                        //If performing the layout has changed the size of the control, the latter 
+                        //has been already invalidated, so there is no need to do it ourselves.
+                        if (Size == oldSize)
+                        {
+                            Invalidate();
+                        }
                     }
                     else
                     {
@@ -213,12 +250,11 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 }
             }
         }
-
+        
         public PannablePictureBox()
         {
             DoubleBuffered = true;
-            ResizeRedraw = true;
-            BackColor = SystemColors.AppWorkspace;
+            ResizeRedraw = true;            
             SetAutoSizeMode(AutoSizeMode.GrowAndShrink);
             PannablePictureBoxImage.OnPannablePictureNewImageSet += Image_OnPannablePictureNewImageSet;            
         }
@@ -325,9 +361,13 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                                  100;
             return zoomPercentage >= 1 ? zoomPercentage : 1;
         }
+        
+        private void Image_OnPannablePictureNewImageSet(object sender, EventArgs e)
+        {
+            Invalidate(ImageRectangle);
+        }
 
-        //TODO
-        private void PctBox_MouseWheel(object sender, MouseEventArgs e)
+        protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (e.Delta < 0)
             {
@@ -337,20 +377,18 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
             {
                 EnlargeImage();
             }
-        }
 
-        private void Image_OnPannablePictureNewImageSet(object sender, EventArgs e)
-        {
-            Invalidate(ImageRectangle);
+            base.OnMouseWheel(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
-            _panning = true;
 
-            Invalidate(ImageRectangle);
+            Focus();
+
+            _panning = true;            
 
             //"Unscale" the provided point so that the panning follow the mouse.
             var scaleFactor = GetControlScaleFactor();
@@ -402,77 +440,74 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
             base.OnMouseMove(e);
         }
 
+        protected override void OnEnter(EventArgs e)
+        {
+            Invalidate(); //We could only invalidate the border region
+            base.OnEnter(e);
+        }
+
+        protected override void OnLeave(EventArgs e)
+        {
+            Invalidate(); //We could only invalidate the border region
+            base.OnLeave(e);
+        }
+
         public override Size GetPreferredSize(Size proposedSize)
         {
-            if (AutoSize)
+            //Calculate the perfect size to accomodate the image at its DPI scaled output size + the border.
+            //Don't use GetImageSize() or the image rectangle since that relies on the control size and 
+            //that's exactly what we are trying to calculate here.
+            var scaleFactor = GetDPIScaleFactor();
+            var prefSizeF = new SizeF();
+
+            prefSizeF.Width = OutputSize.Width * scaleFactor.Width + 2 * BorderThickness;
+            prefSizeF.Height = OutputSize.Height * scaleFactor.Height + 2 * BorderThickness;
+
+            var prefSize = Size.Round(prefSizeF);
+
+            //Enforce maximum size
+            //0 means no maximum
+            if (MaximumSize.Width > 0)
             {
-                //Calculate the perfect size to accomodate the image at its DPI scaled output size + the border.
-                //Don't use GetImageSize() or the image rectangle since that relies on the control size and 
-                //that's exactly what we are trying to calculate here.
-                var scaleFactor = GetDPIScaleFactor();
-                var prefSizeF = new SizeF();
-
-                prefSizeF.Width = OutputSize.Width * scaleFactor.Width + 2 * BorderThickness;
-                prefSizeF.Height = OutputSize.Height * scaleFactor.Height + 2 * BorderThickness;
-
-                var prefSize = Size.Round(prefSizeF);                
-
-                //Enforce maximum size
-                //0 means no maximum
-                if (MaximumSize.Width > 0)
-                {
-                    prefSize.Width = Math.Min(MaximumSize.Width, prefSize.Width);
-                }
-
-                if (MaximumSize.Height > 0)
-                {
-                    prefSize.Height = Math.Min(MaximumSize.Height, prefSize.Height);
-                }
-
-                //Enforce minimum size
-                //0 means no minimum
-                if (MinimumSize.Width > 0)
-                {
-                    prefSize.Width = Math.Max(MinimumSize.Width, prefSize.Width);
-                }
-
-                if (MinimumSize.Height > 0)
-                {
-                    prefSize.Height = Math.Max(MinimumSize.Height, prefSize.Height);
-                }
-
-                //Enforce proposed size
-                //0 means unbounded / no limit
-                if (proposedSize.Width > 0)
-                {
-                    prefSize.Width = Math.Min(proposedSize.Width, prefSize.Width);
-                }
-                
-                if (proposedSize.Height > 0)
-                {
-                    prefSize.Height = Math.Min(proposedSize.Height, prefSize.Height);
-                }                
-
-                return prefSize;
+                prefSize.Width = Math.Min(MaximumSize.Width, prefSize.Width);
             }
-            else
+
+            if (MaximumSize.Height > 0)
             {
-                return base.GetPreferredSize(proposedSize);
-            }            
+                prefSize.Height = Math.Min(MaximumSize.Height, prefSize.Height);
+            }
+
+            //Enforce minimum size
+            //0 means no minimum
+            if (MinimumSize.Width > 0)
+            {
+                prefSize.Width = Math.Max(MinimumSize.Width, prefSize.Width);
+            }
+
+            if (MinimumSize.Height > 0)
+            {
+                prefSize.Height = Math.Max(MinimumSize.Height, prefSize.Height);
+            }
+
+            return prefSize;
         }
         
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.Clear(BackColor);
             if (PannablePictureBoxImage.Width < 1 ||
                 PannablePictureBoxImage.Height < 1)
                 return;
+
+            e.Graphics.Clear(BackColor);
 
             var scaleFactor = GetControlScaleFactor();
             var imgBounds = ImageRectangle;
 
             if (PannablePictureBoxImage.Image != null)
             {
+                //Set a clip with the image bounds so that when the PannablePictureBox image is offset
+                //or larger than the control can accomodate while the control is not exactly the right 
+                //aspect ratio, the overflow is not visible.
                 var oldClip = e.Graphics.Clip;
                 using (var imgClip = oldClip.Clone())
                 {
@@ -493,6 +528,8 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                         PannablePictureBoxImage.Width * scaleFactor,
                         PannablePictureBoxImage.Height * scaleFactor);
 
+                    //Restore the old clip for future drawing, especially by the potential external 
+                    //Paint event listeners that may want to draw outside of the image bounds.
                     e.Graphics.Clip = oldClip;                    
                 }                
 
@@ -518,23 +555,24 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
                 {
                     sf.Trimming = StringTrimming.EllipsisCharacter;
                     var bounds = imgBounds;
-                    bounds.Inflate(-2, -2);
+                    bounds.Inflate(-2, -2); //Some margins
                     e.Graphics.DrawString(PlaceholderText, Font, Brushes.Red, bounds);
                 }
             }
 
             //Draw the border delimiting the image area and the rest of the control
-            imgBounds.Inflate(BorderThickness / 2, BorderThickness / 2);
-            //Apply the typical GDI+ compensation
-            if (BorderThickness < 2)
+            if (BorderThickness > 0)
             {
-                imgBounds.Width -= 1;
-                imgBounds.Height -= 1;
-            }
-            using (var p = new Pen(SystemColors.WindowFrame, BorderThickness))
-            {
-                e.Graphics.DrawRectangle(p, imgBounds.X, imgBounds.Y, imgBounds.Width, imgBounds.Height);
-            }
+                var c = Focused ? BorderFocusedColor : BorderColor;
+
+                imgBounds.Inflate(BorderThickness, BorderThickness);
+
+                ControlPaint.DrawBorder(e.Graphics, imgBounds,
+                    c, BorderThickness, ButtonBorderStyle.Solid,
+                    c, BorderThickness, ButtonBorderStyle.Solid,
+                    c, BorderThickness, ButtonBorderStyle.Solid,
+                    c, BorderThickness, ButtonBorderStyle.Solid);
+            }            
 
             base.OnPaint(e);
         }
@@ -545,6 +583,10 @@ namespace TileIconifier.Controls.IconifierPanel.PictureBox
         {
             var scaleFactor = GetControlScaleFactor();
             var fontScaleFactor = GetControlScaleFactorForFont(e.Graphics);
+            if (scaleFactor == 0 || fontScaleFactor == 0)
+            {
+                return;
+            }
             var imgBounds = ImageRectangle;            
             var overlayBrush = new SolidBrush(TextOverlayColor);
             var overlayLoc = new PointF(imgBounds.X + TextOverlayLocation.X * scaleFactor, imgBounds.Y + TextOverlayLocation.Y * scaleFactor);
