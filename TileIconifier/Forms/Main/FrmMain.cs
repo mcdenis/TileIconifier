@@ -29,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using TileIconifier.Controls.Shortcut;
@@ -53,6 +54,7 @@ namespace TileIconifier.Forms.Main
             InitializeComponent();
 
             ApplySkin();
+            ilsShortcutItemsSmallIcons.ImageSize = SystemInformation.SmallIconSize;
         }
 
         private ShortcutItem CurrentShortcutItem => _currentShortcutListViewItem.ShortcutItem;
@@ -103,7 +105,16 @@ namespace TileIconifier.Forms.Main
 
             var showForegroundColourWarning = CurrentShortcutItem.Properties.ForegroundTextColourChanged;
             var tileIconify = GenerateTileIcon();
-            tileIconify.RunIconify();
+            try
+            {
+                tileIconify.RunIconify();
+            }
+            catch (Exception ex)
+            {
+                FormUtils.ShowMessage(this,
+                    
+    "A failure has occurred creating the new tile (possible access issues if the software is an antivirus, firewall or system application). Use the Custom Shortcut Manager (or click 'Quick Build Custom Shortcut' in the bottom left corner) instead.\r\n\r\nFailure reason: " + ex.Message , "Failure iconifying shortcut", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             UpdateShortcut();
 
             if (showForegroundColourWarning)
@@ -281,7 +292,7 @@ namespace TileIconifier.Forms.Main
         private void txtFilter_TextChanged(object sender, EventArgs e)
         {
             UpdateFilteredList();
-            BuildShortcutList();
+            BuildListViewContent();
             UpdateShortcut();
         }
 
